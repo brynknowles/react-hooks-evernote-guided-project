@@ -1,11 +1,22 @@
 import React from "react";
 
-function NoteItem({ note }) {
-  const { id, title, body } = note
+function NoteItem({ note, onDisplayNote }) {
+  // console.log(note)
+  // const { id, title, body } = note
+
+  // console.log("body", note.body)
+
+  const truncatedBody = () => {
+    if (note.body) {
+      return note.body.substring(0, 25).concat("...")
+    }
+  }
+
   return (
-    <li>
-      <h2>{title}</h2>
-      <p>{body}</p>
+    <li onClick={onDisplayNote} >
+      <h2>{note.title}</h2>
+      {/* <p>{note.body}</p> */}
+      <p>{truncatedBody(note.body)}</p>
     </li>
   );
 }

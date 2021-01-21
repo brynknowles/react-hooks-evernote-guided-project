@@ -1,10 +1,15 @@
 import React from "react";
 
-function NoteViewer() {
+function NoteViewer({ notes }) {
+  // console.log(note)
+  const { id, title, body } = notes
+
+  // const note = 
+
   return (
     <>
-      <h2>Title</h2>
-      <p>Body</p>
+      <h2>title</h2>
+      <p>body</p>
       <button>Edit</button>
     </>
   );

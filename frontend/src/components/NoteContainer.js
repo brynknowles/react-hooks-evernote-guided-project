@@ -5,6 +5,9 @@ import Content from "./Content";
 
 function NoteContainer() {
   const [notes, setNotes] = useState([])
+  const [isDisplayed, setIsDisplayed] = useState(false)
+  const [noteSearch, setNoteSearch] = useState("")
+
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
@@ -13,17 +16,44 @@ function NoteContainer() {
     .then(data => setNotes(data))
   }, [])
 
-  console.log(notes)
+  // console.log(notes)
+
+  function handleDisplayNote(e) {
+    console.log("displaying note", e.target)
+    setIsDisplayed(!isDisplayed)
+
+  }
+
+  const filteredNotes = notes.filter((note) => {
+    if (note.title) {
+      return note.title.toLowerCase().includes(noteSearch.toLowerCase())
+    }
+  })
+
+  function handleSearchText(e) {
+    console.log("searching...")
+    setNoteSearch(e.target.value)
+  }
 
   return (
     <>
-      <Search />
+      <Search onNoteSearch={handleSearchText} setNoteSearch={setNoteSearch} />
       <div className="container">
-        <Sidebar notes={notes} />
-        <Content />
+        <Sidebar notes={filteredNotes} onDisplayNote={handleDisplayNote} />
+        <Content notes={notes} isDisplayed={isDisplayed} />
       </div>
+      {/* <div className="master-detail-element detail">
+        {getContent()}
+      </div>; */}
     </>
   );
 }
 
 export default NoteContainer;
+
+
+/* 
+[ ] Display all notes in the left sidebar.
+[ ] Displayed sidebar notes should show the title and a truncated body.
+[ ] When clicking a note from the sidebar, display its contents in the right panel.
+*/
