@@ -1,10 +1,11 @@
 import React from "react";
 
-function NoteItem() {
+function NoteItem({ note }) {
+  const { id, title, body } = note
   return (
     <li>
-      <h2>Title</h2>
-      <p>Caption...</p>
+      <h2>{title}</h2>
+      <p>{body}</p>
     </li>
   );
 }
