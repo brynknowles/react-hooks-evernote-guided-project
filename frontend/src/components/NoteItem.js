@@ -1,6 +1,6 @@
 import React from "react";
 
-function NoteItem({ note, onDisplayNote }) {
+function NoteItem({ note, onShowContent }) {
   // console.log(note)
   // const { id, title, body } = note
 
@@ -13,7 +13,7 @@ function NoteItem({ note, onDisplayNote }) {
   }
 
   return (
-    <li onClick={onDisplayNote} >
+    <li onClick={onShowContent} >
       <h2>{note.title}</h2>
       {/* <p>{note.body}</p> */}
       <p>{truncatedBody(note.body)}</p>

@@ -10,7 +10,7 @@ import Instructions from "./Instructions";
           Then complete the rest of your app before attempting to
           refactor to get this Content component to work.
 */
-function Content({ notes, isDisplayed }) {
+function Content({ notes, showContent }) {
   
   const getContent = () => {
 
@@ -19,7 +19,7 @@ function Content({ notes, isDisplayed }) {
       // show edit form
       return <NoteEditor />;
       // else if note li in the sidebar is clicked
-    } else if (isDisplayed) {
+    } else if (showContent) {
       // show note detail in NoteViewer
       return <NoteViewer notes={notes} />;
       // else if nothing is clicked

@@ -5,8 +5,8 @@ import Content from "./Content";
 
 function NoteContainer() {
   const [notes, setNotes] = useState([])
-  const [isDisplayed, setIsDisplayed] = useState(false)
-  const [noteSearch, setNoteSearch] = useState("")
+  const [showContent, setShowContent] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
 
   useEffect(() => {
@@ -18,29 +18,23 @@ function NoteContainer() {
 
   // console.log(notes)
 
-  function handleDisplayNote(e) {
+  function handleShowContent(e) {
     console.log("displaying note", e.target)
-    setIsDisplayed(!isDisplayed)
-
+    setShowContent(!showContent)
   }
 
-  const filteredNotes = notes.filter((note) => {
+  const displayedNotes = notes.filter((note) => {
     if (note.title) {
-      return note.title.toLowerCase().includes(noteSearch.toLowerCase())
+      return note.title.toLowerCase().includes(searchTerm.toLowerCase())
     }
   })
 
-  function handleSearchText(e) {
-    console.log("searching...")
-    setNoteSearch(e.target.value)
-  }
-
   return (
     <>
-      <Search onNoteSearch={handleSearchText} setNoteSearch={setNoteSearch} />
+      <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
-        <Sidebar notes={filteredNotes} onDisplayNote={handleDisplayNote} />
-        <Content notes={notes} isDisplayed={isDisplayed} />
+        <Sidebar notes={displayedNotes} onShowContent={handleShowContent} />
+        <Content notes={displayedNotes} showContent={showContent} />
       </div>
       {/* <div className="master-detail-element detail">
         {getContent()}
