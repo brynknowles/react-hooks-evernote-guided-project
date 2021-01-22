@@ -2,26 +2,24 @@ import React, { useState, useEffect } from "react";
 import Search from "./Search";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
+// import NoteEditor from "./NoteEditor";
+// import NoteViewer from "./NoteViewer";
+// import Instructions from "./Instructions";
 
 function NoteContainer() {
   const [notes, setNotes] = useState([])
-  const [showContent, setShowContent] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
-
+  const [selectNote, setSelectNote] = useState(false)
+  const [noteContent, setNoteContent] = useState("")
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
     .then(r => r.json())
     // .then(console.log)
-    .then(data => setNotes(data))
+    .then(notesArray => setNotes(notesArray))
   }, [])
 
   // console.log(notes)
-
-  function handleShowContent(e) {
-    console.log("displaying note", e.target)
-    setShowContent(!showContent)
-  }
 
   const displayedNotes = notes.filter((note) => {
     if (note.title) {
@@ -29,16 +27,31 @@ function NoteContainer() {
     }
   })
 
+  // const getContent = () => {
+
+  //   if (selectedNote === "Edit") {
+  //     return <NoteEditor />;
+  //   } else if (selectedNote === "NoteItem") {
+  //     return <NoteViewer />;
+  //   } else {
+  //     return <Instructions />;
+  //   }
+  // };
+
+  function handleDisplayNoteContent(newSelectedNote) {
+    console.log("display note content", newSelectedNote)
+    setSelectNote(!selectNote)
+    // console.log(selectNote)
+  }
+
   return (
     <>
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
-        <Sidebar notes={displayedNotes} onShowContent={handleShowContent} />
-        <Content notes={displayedNotes} showContent={showContent} />
+        <Sidebar notes={displayedNotes} selectNote={selectNote} onNoteClick={handleDisplayNoteContent} />
+        <Content selectNote={selectNote} />
+        {/* <div className="master-detail-element detail">{getContent()}</div> */}
       </div>
-      {/* <div className="master-detail-element detail">
-        {getContent()}
-      </div>; */}
     </>
   );
 }
@@ -51,3 +64,22 @@ export default NoteContainer;
 [ ] Displayed sidebar notes should show the title and a truncated body.
 [ ] When clicking a note from the sidebar, display its contents in the right panel.
 */
+
+// import React from "react";
+// import Search from "./Search";
+// import Sidebar from "./Sidebar";
+// import Content from "./Content";
+
+// function NoteContainer() {
+//   return (
+//     <>
+//       <Search />
+//       <div className="container">
+//         <Sidebar />
+//         <Content />
+//       </div>
+//     </>
+//   );
+// }
+
+// export default NoteContainer;
