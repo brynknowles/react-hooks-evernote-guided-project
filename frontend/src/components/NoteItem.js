@@ -13,7 +13,7 @@ function NoteItem({ note, onNoteClick }) {
   }
 
   return (
-    <li onClick={() => onNoteClick()} >
+    <li onClick={() => onNoteClick(note)} >
       <h2>{note.title}</h2>
       {/* <p>{note.body}</p> */}
       <p>{truncatedBody(note.body)}</p>

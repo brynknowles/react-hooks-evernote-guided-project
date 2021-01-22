@@ -10,7 +10,9 @@ function NoteContainer() {
   const [notes, setNotes] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [selectNote, setSelectNote] = useState(false)
-  const [noteContent, setNoteContent] = useState("")
+  const [noteContent, setNoteContent] = useState({})
+
+  console.log(notes)
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
@@ -41,6 +43,7 @@ function NoteContainer() {
   function handleDisplayNoteContent(newSelectedNote) {
     console.log("display note content", newSelectedNote)
     setSelectNote(!selectNote)
+    setNoteContent(newSelectedNote)
     // console.log(selectNote)
   }
 
@@ -49,7 +52,7 @@ function NoteContainer() {
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
         <Sidebar notes={displayedNotes} selectNote={selectNote} onNoteClick={handleDisplayNoteContent} />
-        <Content selectNote={selectNote} />
+        <Content selectNote={selectNote} note={noteContent} />
         {/* <div className="master-detail-element detail">{getContent()}</div> */}
       </div>
     </>
