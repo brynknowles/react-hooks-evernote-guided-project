@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import NoteList from "./NoteList";
 
-function Sidebar({ notes, selectNote, onNoteClick }) {
-  // const [activeNote, setActiveNote] = useState(false)
+function Sidebar({ notes, onDisplayContent, onAddNewNote }) {
 
   return (
     <div className="master-detail-element sidebar">
-      <NoteList notes={notes} selectNote={selectNote} onNoteClick={onNoteClick} />
-      <button>New</button>
+      <NoteList notes={notes} onDisplayContent={onDisplayContent} />
+      <button onClick={onAddNewNote}>New</button>
     </div>
   );
 }

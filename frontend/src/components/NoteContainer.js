@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import Search from "./Search";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
-// import NoteEditor from "./NoteEditor";
-// import NoteViewer from "./NoteViewer";
-// import Instructions from "./Instructions";
+
 
 function NoteContainer() {
   const [notes, setNotes] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectNote, setSelectNote] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const [noteContent, setNoteContent] = useState({})
+  const [showEditForm, setShowEditForm] = useState(false)
 
-  console.log(notes)
+  // console.log(notes)
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
@@ -21,68 +20,39 @@ function NoteContainer() {
     .then(notesArray => setNotes(notesArray))
   }, [])
 
-  // console.log(notes)
-
   const displayedNotes = notes.filter((note) => {
     if (note.title) {
       return note.title.toLowerCase().includes(searchTerm.toLowerCase())
     }
   })
 
-  // const getContent = () => {
+  function handleDisplayNoteContent(selectedNote) {
+    console.log("display note content", selectedNote)
+    setIsSelected(!isSelected)
+    setNoteContent(selectedNote)
+    // console.log(isSelected)
+  }
 
-  //   if (selectedNote === "Edit") {
-  //     return <NoteEditor />;
-  //   } else if (selectedNote === "NoteItem") {
-  //     return <NoteViewer />;
-  //   } else {
-  //     return <Instructions />;
-  //   }
-  // };
+  function handleEditNote() {
+    console.log("edit button clicked")
+  }
 
-  function handleDisplayNoteContent(newSelectedNote) {
-    console.log("display note content", newSelectedNote)
-    setSelectNote(!selectNote)
-    setNoteContent(newSelectedNote)
-    // console.log(selectNote)
+  function handleNewNote(newNote) {
+    console.log(newNote)
+    setShowEditForm(!showEditForm)
+    const newNoteArray = [newNote, ...notes]
+    setNotes(newNoteArray)
   }
 
   return (
     <>
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
-        <Sidebar notes={displayedNotes} selectNote={selectNote} onNoteClick={handleDisplayNoteContent} />
-        <Content selectNote={selectNote} note={noteContent} />
-        {/* <div className="master-detail-element detail">{getContent()}</div> */}
+        <Sidebar notes={displayedNotes} isSelected={isSelected} onDisplayContent={handleDisplayNoteContent} onAddNewNote={handleNewNote} />
+        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} />
       </div>
     </>
   );
 }
 
 export default NoteContainer;
-
-
-/* 
-[ ] Display all notes in the left sidebar.
-[ ] Displayed sidebar notes should show the title and a truncated body.
-[ ] When clicking a note from the sidebar, display its contents in the right panel.
-*/
-
-// import React from "react";
-// import Search from "./Search";
-// import Sidebar from "./Sidebar";
-// import Content from "./Content";
-
-// function NoteContainer() {
-//   return (
-//     <>
-//       <Search />
-//       <div className="container">
-//         <Sidebar />
-//         <Content />
-//       </div>
-//     </>
-//   );
-// }
-
-// export default NoteContainer;

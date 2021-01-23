@@ -1,24 +1,40 @@
 import React, { useState } from "react";
 
-function NoteEditor() {
+function NoteEditor({ onAddNewNote }) {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
 
-  // console.log("title", title)
-  // console.log("body", body)
+  // console.log({ title, body })
 
   function handleSubmit(event) {
     event.preventDefault()
-    console.log("submitting")
+    // console.log("submitting")
 
     const formData = {
       title: title,
       body: body
     };
 
-    console.log(formData);
+    // console.log(formData);
+
+    fetch("http://localhost:3000/api/v1/notes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(r => r.json())
+      .then(console.log)
+      // .then((newNote => {
+      //   console.log(newNote)
+      // }))
+      .then(newNote => {
+        onAddNewNote(newNote)
+      })
+      
   }; 
-  
+
   return (
     <form className="note-editor" onSubmit={handleSubmit}>
       <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
