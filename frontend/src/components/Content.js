@@ -10,14 +10,14 @@ import Instructions from "./Instructions";
           Then complete the rest of your app before attempting to
           refactor to get this Content component to work.
 */
-function Content({ isSelected, note, showEditForm, onEditNote, onAddNewNote }) {
+function Content({ isSelected, note, showEditForm, onEditNote, onAddNewNote, onDeleteNote }) {
   
   const getContent = () => {
 
     if (showEditForm) {
       return <NoteEditor onAddNewNote={onAddNewNote} />;
     } else if (isSelected) {
-      return <NoteViewer note={note} onEditNote={onEditNote} />;
+      return <NoteViewer note={note} onEditNote={onEditNote} onDeleteNote={onDeleteNote} />;
     } else {
       return <Instructions />;
     }

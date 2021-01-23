@@ -37,6 +37,12 @@ function NoteContainer() {
     console.log("edit button clicked")
   }
 
+  function handleDeleteNote(id) {
+    console.log(id)
+    const updatedNoteArray = notes.filter((note) => note.id !== id)
+    setNotes(updatedNoteArray)
+  }
+
   function handleNewNote(newNote) {
     console.log(newNote)
     setShowEditForm(!showEditForm)
@@ -49,7 +55,7 @@ function NoteContainer() {
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
         <Sidebar notes={displayedNotes} isSelected={isSelected} onDisplayContent={handleDisplayNoteContent} onAddNewNote={handleNewNote} />
-        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} />
+        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} onDeleteNote={handleDeleteNote} />
       </div>
     </>
   );
