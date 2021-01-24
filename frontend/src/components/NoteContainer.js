@@ -12,6 +12,7 @@ function NoteContainer() {
   const [showEditForm, setShowEditForm] = useState(false)
 
   // console.log(notes)
+  // console.log("search term: ", searchTerm)
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
@@ -20,14 +21,7 @@ function NoteContainer() {
     .then(notesArray => setNotes(notesArray))
   }, [])
 
-  console.log(notes)
-
-  const displayedNotes = notes.filter((note) => {
-    console.log(note)
-    if (note.title) {
-      return note.title.toLowerCase().includes(searchTerm.toLowerCase())
-    }
-  })
+  // console.log(notes)
 
   function handleDisplayNoteContent(selectedNote) {
     console.log("display note content", selectedNote)
@@ -56,12 +50,32 @@ function NoteContainer() {
     setNotes(newNoteArray)
   }
 
+  function handleCancelAddNote() {
+    setShowEditForm(!showEditForm)
+  }
+
+  // i have to refresh the page after a note is created, because of this filtered array and it's conditional
+  const displayedNotes = notes.filter((note) => {
+    console.log("note title: ", note.title)
+    if (note.title) {
+      return note.title.toLowerCase().includes(searchTerm.toLowerCase())
+    }
+    // return note
+  })
+
+  // this filter will not work, since it creates two notes that are undefined -- is this an async thing?
+  // const displayedNotes = notes.filter((note) => {
+  //   console.log("note title: ", note.title)
+  //   return note.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // })
+
+
   return (
     <>
       <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <div className="container">
         <Sidebar notes={displayedNotes} isSelected={isSelected} onDisplayContent={handleDisplayNoteContent} onAddNewNote={handleNewNote} />
-        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} onDeleteNote={handleDeleteNote} />
+        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} onCancelAddNote={handleCancelAddNote} onDeleteNote={handleDeleteNote} />
       </div>
     </>
   );
