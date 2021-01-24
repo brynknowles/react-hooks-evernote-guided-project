@@ -20,7 +20,10 @@ function NoteContainer() {
     .then(notesArray => setNotes(notesArray))
   }, [])
 
+  console.log(notes)
+
   const displayedNotes = notes.filter((note) => {
+    console.log(note)
     if (note.title) {
       return note.title.toLowerCase().includes(searchTerm.toLowerCase())
     }
@@ -33,7 +36,8 @@ function NoteContainer() {
     // console.log(isSelected)
   }
 
-  function handleEditNote() {
+  function handleEditNote(e) {
+    e.preventDefault()
     console.log("edit button clicked")
   }
 
@@ -41,6 +45,8 @@ function NoteContainer() {
     console.log(id)
     const updatedNoteArray = notes.filter((note) => note.id !== id)
     setNotes(updatedNoteArray)
+    setNoteContent({})
+    setIsSelected(!isSelected)
   }
 
   function handleNewNote(newNote) {

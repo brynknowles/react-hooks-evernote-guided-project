@@ -6,11 +6,7 @@ function NoteItem({ note, onDisplayContent }) {
 
   // console.log("body", note.body)
 
-  const truncatedBody = () => {
-    if (note.body) {
-      return note.body.substring(0, 25).concat("...")
-    }
-  }
+  const truncatedBody = () => note.body.substring(0, 25).concat("...")
 
   return (
     <li onClick={() => onDisplayContent(note)}>
