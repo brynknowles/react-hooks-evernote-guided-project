@@ -5,14 +5,20 @@ import Content from "./Content";
 
 
 function NoteContainer() {
+
+  // *************************     STATE VARIABLES WITH USE STATE HOOK    *************************
+
   const [notes, setNotes] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [isSelected, setIsSelected] = useState(false)
   const [noteContent, setNoteContent] = useState({})
-  const [showEditForm, setShowEditForm] = useState(false)
+  const [showNoteEditor, setShowNoteEditor] = useState(false)
+  const [isPost, setIsPost] = useState(false)
 
   // console.log(notes)
   // console.log("search term: ", searchTerm)
+
+// *************************     USE EFFECT HOOK & FETCH FOR API     *************************
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/notes")
@@ -23,17 +29,7 @@ function NoteContainer() {
 
   // console.log(notes)
 
-  function handleDisplayNoteContent(selectedNote) {
-    console.log("display note content", selectedNote)
-    setIsSelected(!isSelected)
-    setNoteContent(selectedNote)
-    // console.log(isSelected)
-  }
-
-  function handleEditNote(e) {
-    e.preventDefault()
-    console.log("edit button clicked")
-  }
+  // *************************     CLICK HANDLER FUNCTION FOR DELETE BUTTON    *************************
 
   function handleDeleteNote(id) {
     console.log(id)
@@ -43,39 +39,65 @@ function NoteContainer() {
     setIsSelected(!isSelected)
   }
 
-  function handleNewNote(newNote) {
-    console.log(newNote)
-    setShowEditForm(!showEditForm)
+  // *************************     CLICK HANDLER FUNCTION FOR CANCEL BUTTON    *************************
+
+  function handleCancelAddNote() {
+    setShowNoteEditor(!showNoteEditor)
+  }
+
+  // *************************     CLICK HANDLER FUNCTION FOR NEW BUTTON     *************************
+
+
+  function handleAddNote(newNote) {
+    // console.log(newNote)
+    setIsPost(!isPost)
+    setShowNoteEditor(!showNoteEditor)
     const newNoteArray = [newNote, ...notes]
     setNotes(newNoteArray)
   }
 
-  function handleCancelAddNote() {
-    setShowEditForm(!showEditForm)
+  // *************************     CLICK HANDLER FUNCTION FOR NOTE CONTENT DISPLAY     *************************
+
+  function handleDisplayContent(selectedNote) {
+    // console.log("display note content", selectedNote)
+    setIsSelected(!isSelected)
+    setNoteContent(selectedNote)
+    // console.log(isSelected)
   }
 
-  // i have to refresh the page after a note is created, because of this filtered array and it's conditional
+  // *************************     CLICK HANDLER FUNCTION FOR EDIT BUTTON     *************************
+
+  // // setting this up to handle my editing feature
+  // function handleUpdateNote(updatedNote) {
+  //   const updatedNoteArray = notes.map((note) => {
+  //     if (note.id === updatedNote.id) {
+  //       return updatedNote
+  //     } else {
+  //       return note
+  //     }
+  //   })
+  //   setNotes(updatedNoteArray)
+  // }
+
+// *************************     FILTERED NOTES FOR SEARCH     *************************
+
   const displayedNotes = notes.filter((note) => {
-    console.log("note title: ", note.title)
-    if (note.title) {
-      return note.title.toLowerCase().includes(searchTerm.toLowerCase())
+    console.log("note in search term filter: ", note)
+    if (note) {
+      if (note.title) {
+        return note.title.toLowerCase().includes(searchTerm.toLowerCase())
+      }
     }
-    // return note
   })
 
-  // this filter will not work, since it creates two notes that are undefined -- is this an async thing?
-  // const displayedNotes = notes.filter((note) => {
-  //   console.log("note title: ", note.title)
-  //   return note.title.toLowerCase().includes(searchTerm.toLowerCase())
-  // })
-
+// *************************     JSX RETURNS SEARCH, SIDEBAR & CONTENT COMPONENTS    *************************
 
   return (
     <>
-      <Search searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="container">
-        <Sidebar notes={displayedNotes} isSelected={isSelected} onDisplayContent={handleDisplayNoteContent} onAddNewNote={handleNewNote} />
-        <Content note={noteContent} isSelected={isSelected} showEditForm={showEditForm} onEditNote={handleEditNote} onAddNewNote={handleNewNote} onCancelAddNote={handleCancelAddNote} onDeleteNote={handleDeleteNote} />
+        <Sidebar notes={displayedNotes} onDisplayContent={handleDisplayContent} onAddNote={handleAddNote} />
+        <Content note={noteContent} isSelected={isSelected} showNoteEditor={showNoteEditor} onAddNote={handleAddNote} onCancelAddNote={handleCancelAddNote} onDeleteNote={handleDeleteNote} isPost={isPost} />
       </div>
     </>
   );

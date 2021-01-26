@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-function NoteEditor({ onAddNewNote, onCancelAddNote }) {
+function NoteEditor({ onAddNote, onCancelAddNote, onUpdateNote, isPost }) {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
 
   // console.log({ title, body })
 
-  function handleSubmit(event) {
+  function handleCreateForm(event) {
     event.preventDefault()
     // console.log("submitting")
 
@@ -30,13 +30,23 @@ function NoteEditor({ onAddNewNote, onCancelAddNote }) {
       //   console.log(newNote)
       // }))
       .then(newNote => {
-        onAddNewNote(newNote)
+        onAddNote(newNote)
       })
       
   }; 
 
+  function handleUpdateForm(e) {
+    console.log(e)
+    e.preventDefault()
+
+    
+
+  }
+
+  // we could pass this component the note and do the PATCH in here, since we have state for title and body already living here. but how do we deal with having only one form to do two different actions? a POST and a PATCH? Melon twister. is it kosher to create a separate form for creating and editing? that might make callbacks and state complicated. 
+
   return (
-    <form className="note-editor" onSubmit={handleSubmit}>
+    <form className="note-editor" onSubmit={isPost ? handleCreateForm : handleUpdateForm}>
       <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
       <textarea name="body" value={body} onChange={(e) => setBody(e.target.value)}/>
       <div className="button-row">

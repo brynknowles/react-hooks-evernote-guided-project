@@ -1,6 +1,6 @@
 import React from "react";
 
-function Search({ setSearchTerm, onSearchChange }) {
+function Search({ searchTerm, setSearchTerm }) {
 
   return (
     <div className="filter">
@@ -8,8 +8,8 @@ function Search({ setSearchTerm, onSearchChange }) {
         id="search-bar" 
         type="text" 
         placeholder="Search Notes" 
-        value={setSearchTerm} 
-        onChange={e => onSearchChange(e.target.value)}
+        value={searchTerm} 
+        onChange={e => setSearchTerm(e.target.value)}
       />
     </div>
   );

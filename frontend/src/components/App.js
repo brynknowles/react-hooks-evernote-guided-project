@@ -3,6 +3,9 @@ import Header from "./Header";
 import NoteContainer from "./NoteContainer";
 
 function App() {
+
+  // *************************     JSX RETURNS HEADER & NOTECONTAINER COMPONENTS     *************************
+
   return (
     <div className="app">
       <Header />
