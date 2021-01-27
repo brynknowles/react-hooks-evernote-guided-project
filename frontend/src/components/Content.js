@@ -10,40 +10,31 @@ import Instructions from "./Instructions";
           Then complete the rest of your app before attempting to
           refactor to get this Content component to work.
 */
-function Content({ note, isSelected, showNoteEditor, onAddNote, isPost, onCancelAddNote, onUpdateNote, onDeleteNote }) {
+
+function Content({ note, showViewer, showEditor, onEditNote, onAddNote, onCancelAddNote, onDeleteNote }) {
+  // console.log("note in Content: ", note)
+
+  // *************************     CONDITIONAL RENDER OF NoteEditor, NoteViewer & Instructions COMPONENTS // ALSO PASSES DOWN PROPS TO THOSE COMPONENTS    *************************
+
   
   const getContent = () => {
 
-    if (showNoteEditor) {
-      return <NoteEditor onAddNote={onAddNote} onCancelAddNote={onCancelAddNote} onUpdateNote={onUpdateNote} isPost={isPost} />;
-    } else if (isSelected) {
-      return <NoteViewer note={note} onUpdateNote={onUpdateNote} onDeleteNote={onDeleteNote} />;
+    if (showEditor) {
+      return <NoteEditor note={note} onAddNote={onAddNote} onCancelAddNote={onCancelAddNote} />;
+    } else if (showViewer) {
+      return <NoteViewer note={note} onEditNote={onEditNote} onDeleteNote={onDeleteNote} />;
     } else {
       return <Instructions />;
     }
   };
 
+  // *************************     JSX RETURNS WHATEVER COMPONENT RETURNED TRUE IN THE CONDITIONAL    *************************
+
+
   return (
-    // <div className="master-detail-element detail"><NoteViewer /></div>
-    // <div className="master-detail-element detail"><NoteEditor /></div>
     <div className="master-detail-element detail">{getContent()}</div>
   )
 }
 
 export default Content;
 
-// function Content() {
-//   const getContent = () => {
-//     if (false) {
-//       return <NoteEditor />;
-//     } else if (false) {
-//       return <NoteViewer />;
-//     } else {
-//       return <Instructions />;
-//     }
-//   };
-
-//   return <div className="master-detail-element detail">{getContent()}</div>;
-// }
-
-// export default Content;

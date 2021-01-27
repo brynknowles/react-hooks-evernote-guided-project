@@ -1,7 +1,9 @@
 import React from "react";
 import NoteList from "./NoteList";
 
-function Sidebar({ notes, onDisplayContent, onAddNote }) {
+function Sidebar({ notes, onDisplayContent, onAddNote, }) {
+
+  // *************************     JSX RETURNS NoteList COMPONENT     *************************
 
   return (
     <div className="master-detail-element sidebar">

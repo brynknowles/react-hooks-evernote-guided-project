@@ -4,7 +4,7 @@ import NoteContainer from "./NoteContainer";
 
 function App() {
 
-  // *************************     JSX RETURNS HEADER & NOTECONTAINER COMPONENTS     *************************
+  // *************************     JSX RETURNS Header & NoteContainer COMPONENTS     *************************
 
   return (
     <div className="app">

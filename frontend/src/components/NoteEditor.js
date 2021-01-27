@@ -1,18 +1,24 @@
+
 import React, { useState } from "react";
 
-function NoteEditor({ onAddNote, onCancelAddNote, onUpdateNote, isPost }) {
-  const [title, setTitle] = useState("")
-  const [body, setBody] = useState("")
+function NoteEditor({ note, onAddNote, onCancelAddNote, onUpdateNote }) {
+  const { id, title, body } = note
+  const [noteTitle, setNoteTitle] = useState("")
+  const [noteBody, setNoteBody] = useState("")
+  const [editedTitle, setEditedTitle] = useState(title)
+  const [editedBody, setEditedBody] = useState(body)
 
   // console.log({ title, body })
 
-  function handleCreateForm(event) {
+      // *************************     SUBMIT HANDLER FUNCTION FOR THE NEW NOTE     *************************
+
+  function handleCreateSubmit(event) {
     event.preventDefault()
     // console.log("submitting")
 
     const formData = {
-      title: title,
-      body: body
+      title: noteTitle,
+      body: noteBody
     };
 
     // console.log(formData);
@@ -35,20 +41,38 @@ function NoteEditor({ onAddNote, onCancelAddNote, onUpdateNote, isPost }) {
       
   }; 
 
-  function handleUpdateForm(e) {
-    console.log(e)
+    // *************************     SUBMIT HANDLER FUNCTION FOR THE EDIT FORM     *************************
+
+  function handleEditSubmit(e) {
     e.preventDefault()
+    console.log({ editedTitle, editedBody })
 
-    
-
+    fetch(`http://localhost:3000/api/v1/notes/${id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        title: editedTitle,
+        body: editedBody
+      })
+    })
+      .then(r => r.json())
+      .then(console.log)
+      // .then(editedNote => {
+      //   onAddNote(editedNote)
+      // })
   }
 
-  // we could pass this component the note and do the PATCH in here, since we have state for title and body already living here. but how do we deal with having only one form to do two different actions? a POST and a PATCH? Melon twister. is it kosher to create a separate form for creating and editing? that might make callbacks and state complicated. 
+// need to make a toggle in the form so that if it's a post request, handleCreateSubmit and setNoteBody + setNoteTitle OR if it's a patch request, handleEditSubmit and setEditedTitle + setEditedBody
+
+  // *************************     JSX RETURNS Note Editor Form     *************************
 
   return (
-    <form className="note-editor" onSubmit={isPost ? handleCreateForm : handleUpdateForm}>
-      <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-      <textarea name="body" value={body} onChange={(e) => setBody(e.target.value)}/>
+    <form className="note-editor" onSubmit={handleCreateSubmit}>
+      <input type="text" name="title" value={noteTitle} onChange={(e) => setNoteTitle(e.target.value)}/>
+      <textarea name="body" value={noteBody} onChange={(e) => setNoteBody(e.target.value)}/>
       <div className="button-row">
         <input className="button" type="submit" value="Save" />
         <button type="button" onClick={onCancelAddNote}>Cancel</button>
@@ -58,19 +82,3 @@ function NoteEditor({ onAddNote, onCancelAddNote, onUpdateNote, isPost }) {
 }
 
 export default NoteEditor;
-
-/*
-CREATING NOTES
-[x] At the bottom of your left sidebar, show a New button.
-[x] Clicking New will create a new note via a POST request with some default title and body.
-[x] This new note should appear in the sidebar.
-*/
-
-/*
-EDITING NOTES
-[ ] When displaying a note in the right panel, show an Edit button.
-[ ] Clicking the Edit button will allow the user to edit the title and body in the right panel.
-[ ] When in edit mode, also show a Save button which saves the note via a PATCH request.
-[ ] When in edit mode, also show a Cancel button which discards any changes and reverts back to displaying the note.
-[ ] Clicking a different note while in edit mode should discard your changes and display the new note instead.
-*/

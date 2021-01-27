@@ -8,6 +8,8 @@ function NoteItem({ note, onDisplayContent }) {
 
   const truncatedBody = () => note.body.substring(0, 25).concat("...")
 
+  // *************************     JSX RETURNS Note title & body     *************************
+
   return (
     <li onClick={() => onDisplayContent(note)}>
       <h2>{note.title}</h2>

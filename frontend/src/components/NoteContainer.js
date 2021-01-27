@@ -10,10 +10,9 @@ function NoteContainer() {
 
   const [notes, setNotes] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-  const [isSelected, setIsSelected] = useState(false)
   const [noteContent, setNoteContent] = useState({})
-  const [showNoteEditor, setShowNoteEditor] = useState(false)
-  const [isPost, setIsPost] = useState(false)
+  const [showViewer, setShowViewer] = useState(false)
+  const [showEditor, setShowEditor] = useState(false)
 
   // console.log(notes)
   // console.log("search term: ", searchTerm)
@@ -29,6 +28,22 @@ function NoteContainer() {
 
   // console.log(notes)
 
+    // *************************     CLICK HANDLER FUNCTION FOR EDIT BUTTON     *************************
+
+  // // // setting this up to handle my editing feature
+  function handleEditNote(editedNote) {
+    console.log(editedNote)
+    const updatedNoteArray = notes.map((note) => {
+      if (note.id === editedNote.id) {
+        return editedNote
+      } else {
+        return note
+      }
+    })
+    console.log(updatedNoteArray)
+    // setNotes(updatedNoteArray)
+  }
+
   // *************************     CLICK HANDLER FUNCTION FOR DELETE BUTTON    *************************
 
   function handleDeleteNote(id) {
@@ -36,22 +51,20 @@ function NoteContainer() {
     const updatedNoteArray = notes.filter((note) => note.id !== id)
     setNotes(updatedNoteArray)
     setNoteContent({})
-    setIsSelected(!isSelected)
+    setShowViewer(!showViewer)
   }
 
-  // *************************     CLICK HANDLER FUNCTION FOR CANCEL BUTTON    *************************
+  // *************************     CLICK HANDLER FUNCTION FOR CANCEL BUTTON -- USED ONLY FOR CANCELING A NEW NOTE    *************************
 
   function handleCancelAddNote() {
-    setShowNoteEditor(!showNoteEditor)
+    setShowEditor(!showEditor)
   }
 
   // *************************     CLICK HANDLER FUNCTION FOR NEW BUTTON     *************************
 
-
   function handleAddNote(newNote) {
     // console.log(newNote)
-    setIsPost(!isPost)
-    setShowNoteEditor(!showNoteEditor)
+    setShowEditor(!showEditor)
     const newNoteArray = [newNote, ...notes]
     setNotes(newNoteArray)
   }
@@ -60,29 +73,16 @@ function NoteContainer() {
 
   function handleDisplayContent(selectedNote) {
     // console.log("display note content", selectedNote)
-    setIsSelected(!isSelected)
+    setShowViewer(!showViewer)
     setNoteContent(selectedNote)
     // console.log(isSelected)
   }
 
-  // *************************     CLICK HANDLER FUNCTION FOR EDIT BUTTON     *************************
 
-  // // setting this up to handle my editing feature
-  // function handleUpdateNote(updatedNote) {
-  //   const updatedNoteArray = notes.map((note) => {
-  //     if (note.id === updatedNote.id) {
-  //       return updatedNote
-  //     } else {
-  //       return note
-  //     }
-  //   })
-  //   setNotes(updatedNoteArray)
-  // }
-
-// *************************     FILTERED NOTES FOR SEARCH     *************************
+// *************************     FILTERED NOTES COMPARED TO SEARCH TERM    *************************
 
   const displayedNotes = notes.filter((note) => {
-    console.log("note in search term filter: ", note)
+    // console.log("note in search term filter: ", note)
     if (note) {
       if (note.title) {
         return note.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -90,14 +90,14 @@ function NoteContainer() {
     }
   })
 
-// *************************     JSX RETURNS SEARCH, SIDEBAR & CONTENT COMPONENTS    *************************
+// *************************     JSX RETURNS Search, Sidebar & Content COMPONENTS    *************************
 
   return (
     <>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="container">
         <Sidebar notes={displayedNotes} onDisplayContent={handleDisplayContent} onAddNote={handleAddNote} />
-        <Content note={noteContent} isSelected={isSelected} showNoteEditor={showNoteEditor} onAddNote={handleAddNote} onCancelAddNote={handleCancelAddNote} onDeleteNote={handleDeleteNote} isPost={isPost} />
+        <Content note={noteContent} showViewer={showViewer} showEditor={showEditor} onAddNote={handleAddNote} onCancelAddNote={handleCancelAddNote} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
       </div>
     </>
   );

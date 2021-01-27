@@ -1,6 +1,6 @@
 import React from "react";
 
-function NoteViewer({ note, onUpdateNote, onDeleteNote }) {
+function NoteViewer({ note, onEditNote, onDeleteNote }) {
   const { id, title, body } = note
 
   function handleDeleteClick() {
@@ -11,19 +11,17 @@ function NoteViewer({ note, onUpdateNote, onDeleteNote }) {
     onDeleteNote(id)
   }
 
-  // another idea is to have the handleEditNote function live here with the PATCH.
-  // remove the onUpdateNote
-  // pass down showEditForm and setShowEditForm state to use here in the handleEditNote fn
-  // create a function handleEditNote that sets the state as showing the edit form
+  // *************************     JSX RETURNS Note contents in full form, with Edit & Delete Buttons     *************************
 
   return (
     <>
       <h2>{title}</h2>
       <p>{body}</p>
-      <button onClick={onUpdateNote}>Edit</button>
+      <button onClick={onEditNote}>Edit</button>
       <button onClick={handleDeleteClick}>Delete</button>
     </>
   );
 }
 
 export default NoteViewer;
+
